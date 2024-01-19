@@ -1,0 +1,4 @@
+<h1><center>PASSWORD GENERATOR</center></h1>
+<p>Password generators are easy to find, but why not design your own with a few lines of code? Creating a password generator isn’t difficult, though you can alter the parameters to give your password (and your code) more variety. How would you mix upper- and lower-case letters? Do you want to add numbers or other keyboard characters? How many of each character should be included? You can set all of these conditions in your code to create stronger passwords.</p>
+<h2><center>Skills Tested</center></h2>
+<p>You’ll work with the Random library (a built-in module used to generate random numbers) and strengthen your algorithm-development muscles. Depending on the complexity of the password string you create, the code can range from simple to complex. Start with an eight-character password, then keep going.</p>
