@@ -5,7 +5,7 @@ import mysql.connector
 
 # making Connection
 con = mysql.connector.connect(
-    host="localhost", user="root", password="", database="employee_db")
+    host="localhost", user="root", password="my.password", database="employee_db")
 
 # Function to mAdd_Employee
 def Add_Employ():
