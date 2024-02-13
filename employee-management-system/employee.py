@@ -2,6 +2,23 @@
 
 import mysql.connector
 
+# Define the check_employee function first
+def check_employee(employee_id):
+    # Query to select all Rows from employee Table
+    sql = 'SELECT * FROM empd WHERE id=%s'
+    c = con.cursor(buffered=True)
+    data = (employee_id,)
+
+    # Executing the SQL Query
+    c.execute(sql, data)
+
+    # rowcount method to find number of rows with given values
+    r = c.rowcount
+    if r == 1:
+        return True
+    else:
+        return False
+
 db_config = {
         'host': 'localhost',
         'user': 'root',
@@ -24,10 +41,22 @@ employee_data = [
 
 insert_query = 'INSERT INTO empd (id, name, post, salary) VALUES (%s, %s, %s, %s)'
 
-cursor.executemany(insert_query, employee_data)
-con.commit()
-cursor.close()
-con.close()
+try:
+    # Check for existing data before insertion
+    for data in employee_data:
+        employee_id = data[0]
+        if check_employee(employee_id):
+            print(f"Employee with ID {employee_id} already exists. Skipping insertion.")
+        else:
+            cursor.execute(insert_query, data)
+
+    con.commit()
+    print("Data inserted successfully.")
+except mysql.connector.Error as err:
+    print("Error: {}".format(err))
+finally:
+    cursor.close()
+    con.close()
 
 # Function to mAdd_Employee
 def Add_Employ():
@@ -123,30 +152,6 @@ def Remove_Employ():
         print("Employee Removed")
         menu()
 
-
-# Function To Check if Employee with
-# given Id Exist or Not
-def check_employee(employee_id):
-
-    # Query to select all Rows f
-    # rom employee Table
-    sql = 'select * from empd where id=%s'
-
-    # making cursor buffered to make
-    # rowcount method work properly
-    c = con.cursor(buffered=True)
-    data = (employee_id,)
-
-    # Executing the SQL Query
-    c.execute(sql, data)
-
-    # rowcount method to find
-    # number of rows with given values
-    r = c.rowcount
-    if r == 1:
-        return True
-    else:
-        return False
 
 # Function to Display All Employees
 # from Employee Table
