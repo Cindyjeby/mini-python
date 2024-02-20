@@ -1,44 +1,86 @@
 const apiUrl = "http://127.0.0.1:5000";
 
 async function sendRequest(url, method, data = {}) {
-    return fetch(url, {
-        method,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .catch(error => console.error('Error:', error));
+    try {
+        const response = await fetch(url, {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        const responseData = await response.json();
+        return { success: true, data: responseData };
+    } catch (error) {
+        console.error('Error:', error);
+        return { success: false, error: error.message || 'Unknown error' };
+    }
 }
 
 async function addEmployee() {
-    const employeeData = {
-        Id: prompt("Enter Employee Id"),
-        Name: prompt("Enter Employee Name"),
-        Post: prompt("Enter Employee Post"),
-        Salary: prompt("Enter Employee Salary"),
-    };
+    try {
+        const employeeData = {
+            Id: prompt("Enter Employee Id"),
+            Name: prompt("Enter Employee Name"),
+            Post: prompt("Enter Employee Post"),
+            Salary: prompt("Enter Employee Salary"),
+        };
 
-    sendRequest(apiUrl + '/add_employee', 'POST', employeeData)
-        .then(response => console.log(response));
+        const response = await sendRequest(apiUrl + '/add_employee', 'POST', employeeData);
+
+        if (response.success) {
+            console.log("Employee added successfully");
+        } else {
+            console.error('Error:', response.error);
+        }
+    } catch (error) {
+        console.error('Unexpected error:', error);
+    }
 }
 
 async function removeEmployee() {
-    const employeeId = prompt("Enter Employee Id to remove");
-    sendRequest(apiUrl + `/remove_employee/${employeeId}`, 'DELETE')
-        .then(response => console.log(response));
+    try {
+        const employeeId = prompt("Enter Employee Id to remove");
+        const response = await sendRequest(apiUrl + `/remove_employee/${employeeId}`, 'DELETE');
+
+        if (response.success) {
+            console.log("Employee removed successfully");
+        } else {
+            console.error('Error:', response.error);
+        }
+    } catch (error) {
+        console.error('Unexpected error:', error);
+    }
 }
 
 async function promoteEmployee() {
-    const employeeId = prompt("Enter Employee Id to promote");
-    const amount = prompt("Enter increase in Salary");
+    try {
+        const employeeId = prompt("Enter Employee Id to promote");
+        const amount = prompt("Enter increase in Salary");
 
-    sendRequest(apiUrl + `/promote_employee/${employeeId}`, 'PUT', { amount })
-        .then(response => console.log(response));
+        const response = await sendRequest(apiUrl + `/promote_employee/${employeeId}`, 'PUT', { amount });
+
+        if (response.success) {
+            console.log("Employee promoted successfully");
+        } else {
+            console.error('Error:', response.error);
+        }
+    } catch (error) {
+        console.error('Unexpected error:', error);
+    }
 }
 
 async function displayEmployees() {
-    sendRequest(apiUrl + '/display_employees', 'GET')
-        .then(response => console.log(response));
+    try {
+        const response = await sendRequest(apiUrl + '/display_employees', 'GET');
+
+        if (response.success) {
+            console.log("Employees retrieved successfully:", response.data);
+        } else {
+            console.error('Error:', response.error);
+        }
+    } catch (error) {
+        console.error('Unexpected error:', error);
+    }
 }
