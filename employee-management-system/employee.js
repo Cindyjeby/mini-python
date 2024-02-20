@@ -1,6 +1,6 @@
 const apiUrl = "http://127.0.0.1:5000";
 
-function sendRequest(url, method, data = {}) {
+async function sendRequest(url, method, data = {}) {
     return fetch(url, {
         method,
         headers: {
@@ -12,7 +12,7 @@ function sendRequest(url, method, data = {}) {
     .catch(error => console.error('Error:', error));
 }
 
-function addEmployee() {
+async function addEmployee() {
     const employeeData = {
         Id: prompt("Enter Employee Id"),
         Name: prompt("Enter Employee Name"),
@@ -24,13 +24,13 @@ function addEmployee() {
         .then(response => console.log(response));
 }
 
-function removeEmployee() {
+async function removeEmployee() {
     const employeeId = prompt("Enter Employee Id to remove");
     sendRequest(apiUrl + `/remove_employee/${employeeId}`, 'DELETE')
         .then(response => console.log(response));
 }
 
-function promoteEmployee() {
+async function promoteEmployee() {
     const employeeId = prompt("Enter Employee Id to promote");
     const amount = prompt("Enter increase in Salary");
 
@@ -38,7 +38,7 @@ function promoteEmployee() {
         .then(response => console.log(response));
 }
 
-function displayEmployees() {
+async function displayEmployees() {
     sendRequest(apiUrl + '/display_employees', 'GET')
         .then(response => console.log(response));
 }
